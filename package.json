@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --hot --port 3000",
+    "start": "webpack-dev-server --hot --port 3000 --open",
     "build": "webpack",
     "api": "node api.js"
   },

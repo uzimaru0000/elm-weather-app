@@ -34,9 +34,9 @@ type alias Weather =
 
 
 type alias Data =
-    { time : Int
+    { time : Float 
     , temp : Temp
-    , weather : List Weather
+    , weather : Maybe Weather
     }
 
 type alias Forecast =
@@ -48,9 +48,9 @@ type alias Forecast =
 temp : Decoder Temp
 temp =
     decode Temp
-        |> required "temp" float
-        |> required "temp_min" float
-        |> required "temp_max" float
+        |> custom (field "temp" float |> Decode.map ((+) -273.15))
+        |> custom (field "temp_min" float |> Decode.map ((+) -273.15))
+        |> custom (field "temp_max" float |> Decode.map ((+) -273.15))
         |> required "humidity" float
 
 
@@ -65,9 +65,9 @@ weather =
 data : Decoder Data
 data =
     decode Data
-        |> required "dt" int
+        |> custom (field "dt" float |> Decode.map ((*) 1000))
         |> required "main" temp
-        |> required "weather" (list weather)
+        |> custom (field "weather" (list weather) |> Decode.map List.head)
 
 
 city : Decoder City
