@@ -13,6 +13,7 @@
   "license": "ISC",
   "devDependencies": {
     "css-loader": "^0.28.7",
+    "elm-test": "^0.18.12",
     "elm-webpack-loader": "^4.4.0",
     "file-loader": "^1.1.6",
     "foreman": "^2.0.0",
