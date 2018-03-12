@@ -1,5 +1,6 @@
 module Weather exposing (..)
 
+import Date exposing (..)
 import Json.Decode as Decode exposing (..)
 import Json.Decode.Pipeline exposing (..)
 
@@ -14,15 +15,16 @@ type alias City =
     { id : Maybe Int
     , name : String
     , coord : Coord
-    , country : String
     }
 
 
 type alias Temp =
-    { temp : Float
-    , minTemp : Float
-    , maxTemp : Float
-    , humidity : Float
+    { day : Float
+    , min : Float
+    , max : Float
+    , night : Float
+    , eve : Float
+    , morn : Float
     }
 
 
@@ -34,7 +36,7 @@ type alias Weather =
 
 
 type alias Data =
-    { time : Float 
+    { time : Date 
     , temp : Temp
     , weather : Maybe Weather
     }
@@ -48,10 +50,12 @@ type alias Forecast =
 temp : Decoder Temp
 temp =
     decode Temp
-        |> custom (field "temp" float |> Decode.map ((+) -273.15))
-        |> custom (field "temp_min" float |> Decode.map ((+) -273.15))
-        |> custom (field "temp_max" float |> Decode.map ((+) -273.15))
-        |> required "humidity" float
+        |> custom (field "day" float |> Decode.map ((+) -273.15))
+        |> custom (field "min" float |> Decode.map ((+) -273.15))
+        |> custom (field "max" float |> Decode.map ((+) -273.15))
+        |> custom (field "night" float |> Decode.map ((+) -273.15))
+        |> custom (field "eve" float |> Decode.map ((+) -273.15))
+        |> custom (field "morn" float |> Decode.map ((+) -273.15))
 
 
 weather : Decoder Weather
@@ -65,8 +69,8 @@ weather =
 data : Decoder Data
 data =
     decode Data
-        |> custom (field "dt" float |> Decode.map ((*) 1000))
-        |> required "main" temp
+        |> custom (field "dt" float |> Decode.map ((*) 1000 >> Date.fromTime))
+        |> required "temp" temp
         |> custom (field "weather" (list weather) |> Decode.map List.head)
 
 
@@ -82,7 +86,6 @@ city =
             |> custom (maybe <| field "id" int)
             |> required "name" string
             |> required "coord" coord
-            |> required "country" string
 
 forecast : Decoder Forecast
 forecast =

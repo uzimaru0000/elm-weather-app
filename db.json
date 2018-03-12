@@ -1,49 +1,43 @@
 {
     "weather": {
         "city": {
-            "id": 1851632,
-            "name": "Shuzenji",
+            "id": 2113126,
+            "name": "Akita",
             "coord": {
-                "lon": 138.933334,
-                "lat": 34.966671
+                "lon": 140.1167,
+                "lat": 39.7167
             },
-            "country": "JP"
+            "country": "JP",
+            "population": 0
         },
         "cod": "200",
-        "message": 0.0045,
-        "cnt": 38,
+        "message": 0.0622441,
+        "cnt": 7,
         "list": [
             {
-                "dt": 1406106000,
-                "main": {
-                    "temp": 298.77,
-                    "temp_min": 298.77,
-                    "temp_max": 298.774,
-                    "pressure": 1005.93,
-                    "sea_level": 1018.18,
-                    "grnd_level": 1005.93,
-                    "humidity": 87,
-                    "temp_kf": 0.26
+                "dt": 1520820000,
+                "temp": {
+                    "day": 274.99,
+                    "min": 266.12,
+                    "max": 274.99,
+                    "night": 266.12,
+                    "eve": 271.87,
+                    "morn": 274.99
                 },
+                "pressure": 1006.73,
+                "humidity": 68,
                 "weather": [
                     {
-                        "id": 804,
-                        "main": "Clouds",
-                        "description": "overcast clouds",
-                        "icon": "04d"
+                        "id": 600,
+                        "main": "Snow",
+                        "description": "light snow",
+                        "icon": "13d"
                     }
                 ],
-                "clouds": {
-                    "all": 88
-                },
-                "wind": {
-                    "speed": 5.71,
-                    "deg": 229.501
-                },
-                "sys": {
-                    "pod": "d"
-                },
-                "dt_txt": "2014-07-23 09:00:00"
+                "speed": 3.43,
+                "deg": 296,
+                "clouds": 80,
+                "snow": 0.03
             }
         ]
     }

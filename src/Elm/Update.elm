@@ -3,6 +3,7 @@ module Update exposing (..)
 import Model exposing (..)
 import Weather exposing (..)
 import Http exposing (..)
+import Ports exposing (..)
 import Material
 
 
@@ -13,29 +14,71 @@ apiKey =
 
 baseUrl : String
 baseUrl =
-    "http://api.openweathermap.org/data/2.5/forecast"
+    "http://api.openweathermap.org/data/2.5/"
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        Search ->
-            model ! [ getWeather model.query ]
+        ReturnCityList list ->
+            ( model
+            , list
+                |> List.filterMap .id
+                |> List.map getForecastFromId
+                |> Cmd.batch
+            )
+
+        GetForecast (Ok forecast) ->
+            let
+                forecasts =
+                    model.forecasts
+                        ++ (if model.forecasts |> List.map .city |> List.member forecast.city |> not then
+                                [ forecast ]
+                            else
+                                []
+                           )
+            in
+                { model | forecasts = forecasts } ! [ forecasts |> List.map .city |> updateCityList ]
+
+        GetForecast (Err message) ->
+            (model |> Debug.log "") ! []
 
         InputQuery query ->
-            { model | query = query } ! []
+            ( { model | query = query }, Cmd.none )
 
-        GetWeather (Ok weather) ->
-            { model | forecast = Just weather } ! []
+        AddCity ->
+            { model | query = "" } ! [ getForecastFromCity model.query ]
 
-        GetWeather (Err _) ->
-            { model | forecast = Nothing } ! []
+        RemoveCity index ->
+            let
+                forecasts =
+                    model.forecasts
+                        |> List.indexedMap (,)
+                        |> List.filter (Tuple.first >> (/=) index)
+                        |> List.map Tuple.second
+            in
+                ( { model | forecasts = forecasts }
+                , forecasts |> List.map .city |> updateCityList
+                )
 
         Mdl msg_ ->
             Material.update Mdl msg_ model
 
+        _ ->
+            model ! []
 
-getWeather : String -> Cmd Msg
-getWeather query =
-    send GetWeather <|
-        get (String.join "" [ baseUrl, "?q=", query, ",jp", "&appid=", apiKey ]) forecast
+
+getForecast : String -> Cmd Msg
+getForecast query =
+    send GetForecast <|
+        get (String.join "" [ baseUrl, "forecast/daily?", query, "&appid=", apiKey ]) forecast
+
+
+getForecastFromCity : String -> Cmd Msg
+getForecastFromCity city =
+    getForecast (String.join "" [ "q=", city, ",jp" ])
+
+
+getForecastFromId : Int -> Cmd Msg
+getForecastFromId id =
+    getForecast (String.join "" [ "id=", toString id ])

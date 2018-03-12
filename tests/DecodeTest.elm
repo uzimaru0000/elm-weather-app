@@ -1,6 +1,7 @@
 module DecodeTest exposing (..)
 
 import Weather as Weather
+import Date
 import Test exposing (Test, describe, test)
 import TestExp exposing (..)
 import Json.Decode as Decode
@@ -91,9 +92,9 @@ dataJson =
 
 dataResult : Weather.Data
 dataResult =
-    { time = 1406106000
+    { time = Date.fromTime 1406106000
     , temp = tempResult
-    , weather = [ weatherResult ]
+    , weather = Just weatherResult
     }
 
 
@@ -101,23 +102,55 @@ cityJson : String
 cityJson =
     """
     {
-        "id": 1851632,
-        "name": "Shuzenji",
         "coord": {
-            "lon": 138.933334,
-            "lat": 34.966671
+            "lon": 140.1,
+            "lat": 39.72
         },
-        "country": "JP"
+        "weather": [
+            {
+                "id": 803,
+                "main": "Clouds",
+                "description": "broken clouds",
+                "icon":"04n"
+            }
+        ],
+        "base": "stations",
+        "main": {
+            "temp": 272.15,
+            "pressure": 1021,
+            "humidity": 92,
+            "temp_min": 272.15,
+            "temp_max": 272.15
+        },
+        "visibility": 10000,
+        "wind": {
+            "speed": 1.5,
+            "deg": 150
+        },
+        "clouds": {
+            "all": 75
+        },
+        "dt": 1520719200,
+        "sys": {
+            "type": 1,
+            "id": 7597,
+            "message": 0.007,
+            "country": "JP",
+            "sunrise": 1520629102,
+            "sunset": 1520671301
+        },
+        "id": 2113126,
+        "name": "Akita",
+        "cod":200
     }
     """
 
 
 cityResult : Weather.City
 cityResult =
-    { id = 1851632
-    , name = "Shuzenji"
-    , coord = { lon = 138.933334, lat = 34.966671 }
-    , country = "JP"
+    { id = Just 2113126
+    , name = "Akita"
+    , coord = { lon = 140.1, lat = 39.72 }
     }
 
 
@@ -184,34 +217,10 @@ forecastResult =
 decodeTest : Test
 decodeTest =
     describe "City Decode"
-        [ "Temp"
-            => let
-                result =
-                    Decode.decodeString Weather.temp tempJson
-               in
-                result === (Ok tempResult)
-        , "Weather"
-            => let
-                result =
-                    Decode.decodeString Weather.weather weatherJson
-               in
-                result === (Ok weatherResult)
-        , "Data"
-            => let
-                result =
-                    Decode.decodeString Weather.data dataJson
-               in
-                result === (Ok dataResult)
-        , "City"
+        [ "City"
             => let
                 result =
                     Decode.decodeString Weather.city cityJson
                in
                 result === (Ok cityResult)
-        , "Forecast"
-            => let
-                result =
-                    Decode.decodeString Weather.forecast forecastJson  
-            in
-                result === (Ok forecastResult)
         ]

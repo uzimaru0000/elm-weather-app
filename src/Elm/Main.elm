@@ -4,14 +4,14 @@ import Html exposing (Html, program, text)
 import Update exposing (..)
 import Model exposing (..)
 import View exposing (..)
-import Material
+import Ports exposing (getCityList, returnCityList)
 
 
 main : Program Never Model Msg
 main =
     program
-        { init = { forecast = Nothing, query = "", mdl = Material.model } ! []
+        { init = init ! [ getCityList ]
         , update = update
         , view = view
-        , subscriptions = always Sub.none
+        , subscriptions = always (returnCityList ReturnCityList)
         }
