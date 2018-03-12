@@ -1,10 +1,7 @@
 module View exposing (..)
 
-import Date exposing (fromTime)
-import Dict exposing (..)
 import Date.Format exposing (format)
 import Html exposing (..)
-import Html.Events exposing (onClick, onInput)
 import Model exposing (..)
 import Weather exposing (..)
 
@@ -21,7 +18,6 @@ import Material.Textfield as Textfield
 import Material.Button as Button
 import Material.Card as Card
 import Material.Elevation as Elevation
-import Material.List as Lists
 import Material.Color as Color
 import Material.Icon as Icon
 
@@ -33,7 +29,7 @@ view model =
         [ Layout.fixedHeader
         ]
         { header =
-            [ Layout.title [] [ text "Weather-App" ]
+            [ Layout.row [] [ Layout.title [] [ text "Weather-App" ] ]
             ]
         , drawer = []
         , tabs = ( [], [] )
@@ -155,7 +151,7 @@ cardAction mdl ( index, data ) =
     Card.actions
         [ Card.border, Card.expand ]
         [ Button.render Mdl
-            [ Maybe.withDefault 0 data.city.id, 0 ]
+            [ index, 0 ]
             mdl
             [ Button.ripple
             , Button.accent

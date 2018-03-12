@@ -3,16 +3,11 @@
 require('./index.html');
 
 const Elm = require('./Elm/Main.elm');
-const main = document.getElementById('main');
-
-const app = Elm.Main.embed(main);
-
-// localStorage.clear();
+const app = Elm.Main.fullscreen();
 
 app.ports.getCityList_.subscribe(_ => {
     const cityList = JSON.parse(localStorage.getItem('cities'));
     if (cityList != null) {
-        console.log(cityList);
         app.ports.returnCityList.send(cityList);
     }
 });
