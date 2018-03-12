@@ -14,7 +14,7 @@ apiKey =
 
 baseUrl : String
 baseUrl =
-    "http://api.openweathermap.org/data/2.5/"
+    "https://api.openweathermap.org/data/2.5/"
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
