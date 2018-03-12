@@ -17073,7 +17073,7 @@ var _user$project$Ports$returnCityList = _elm_lang$core$Native_Platform.incoming
 						}
 					})))));
 
-var _user$project$Update$baseUrl = 'http://api.openweathermap.org/data/2.5/';
+var _user$project$Update$baseUrl = 'https://api.openweathermap.org/data/2.5/';
 var _user$project$Update$apiKey = '94d26b113fb10bb70a9dfbeecc28dfbe';
 var _user$project$Update$getForecast = function (query) {
 	return A2(
