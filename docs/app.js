@@ -17126,21 +17126,6 @@ var _user$project$Update$getForecastFromCity = function (city) {
 				}
 			}));
 };
-var _user$project$Update$getForecastFromId = function (id) {
-	return _user$project$Update$getForecast(
-		A2(
-			_elm_lang$core$String$join,
-			'',
-			{
-				ctor: '::',
-				_0: 'id=',
-				_1: {
-					ctor: '::',
-					_0: _elm_lang$core$Basics$toString(id),
-					_1: {ctor: '[]'}
-				}
-			}));
-};
 var _user$project$Update$update = F2(
 	function (msg, model) {
 		var _p0 = msg;
@@ -17152,11 +17137,11 @@ var _user$project$Update$update = F2(
 					_1: _elm_lang$core$Platform_Cmd$batch(
 						A2(
 							_elm_lang$core$List$map,
-							_user$project$Update$getForecastFromId,
+							_user$project$Update$getForecastFromCity,
 							A2(
-								_elm_lang$core$List$filterMap,
+								_elm_lang$core$List$map,
 								function (_) {
-									return _.id;
+									return _.name;
 								},
 								_p0._0)))
 				};
@@ -17264,6 +17249,21 @@ var _user$project$Update$update = F2(
 					{ctor: '[]'});
 		}
 	});
+var _user$project$Update$getForecastFromId = function (id) {
+	return _user$project$Update$getForecast(
+		A2(
+			_elm_lang$core$String$join,
+			'',
+			{
+				ctor: '::',
+				_0: 'id=',
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$core$Basics$toString(id),
+					_1: {ctor: '[]'}
+				}
+			}));
+};
 
 var _user$project$View$weatherIcon = F2(
 	function (size, id) {
