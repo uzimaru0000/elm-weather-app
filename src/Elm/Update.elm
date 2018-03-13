@@ -38,16 +38,16 @@ update msg model =
                                 []
                            )
             in
-                { model | forecasts = forecasts } ! [ forecasts |> List.map .city |> updateCityList ]
+                { model | forecasts = forecasts, query = "", isError = False } ! [ forecasts |> List.map .city |> updateCityList ]
 
         GetForecast (Err message) ->
-            (model |> Debug.log "") ! []
+            { model | isError = True } ! []
 
         InputQuery query ->
-            ( { model | query = query }, Cmd.none )
+            ( { model | query = query, isError = False }, Cmd.none )
 
         AddCity ->
-            { model | query = "" } ! [ getForecastFromCity model.query ]
+            (model, if String.isEmpty model.query |> not then getForecastFromCity model.query else Cmd.none)
 
         RemoveCity index ->
             let

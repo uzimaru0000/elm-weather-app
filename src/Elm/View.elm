@@ -61,6 +61,7 @@ inputForm model =
             [ Textfield.label "Input PlaceName"
             , Textfield.floatingLabel
             , Textfield.value model.query
+            , Textfield.error (model.query ++ " is not found.") |> Options.when model.isError
             , Options.onInput InputQuery
             , Options.css "width" "100%"
             ]

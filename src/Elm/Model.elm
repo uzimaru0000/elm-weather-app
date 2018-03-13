@@ -8,6 +8,7 @@ import Material
 type alias Model =
     { forecasts : List Forecast
     , query : String
+    , isError : Bool
     , mdl : Material.Model
     }
 
@@ -27,5 +28,6 @@ init : Model
 init =
     { forecasts = []
     , query = ""
+    , isError = False
     , mdl = Material.model
     }
