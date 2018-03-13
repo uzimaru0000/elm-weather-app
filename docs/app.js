@@ -17825,8 +17825,12 @@ var _user$project$View$cardAction = F2(
 				_0: _debois$elm_mdl$Material_Card$border,
 				_1: {
 					ctor: '::',
-					_0: _debois$elm_mdl$Material_Card$expand,
-					_1: {ctor: '[]'}
+					_0: A2(_debois$elm_mdl$Material_Options$css, 'display', 'flex'),
+					_1: {
+						ctor: '::',
+						_0: A2(_debois$elm_mdl$Material_Options$css, 'justify-content', 'flex-end'),
+						_1: {ctor: '[]'}
+					}
 				}
 			},
 			{
@@ -17849,11 +17853,12 @@ var _user$project$View$cardAction = F2(
 						_0: _debois$elm_mdl$Material_Button$ripple,
 						_1: {
 							ctor: '::',
-							_0: _debois$elm_mdl$Material_Button$accent,
+							_0: _debois$elm_mdl$Material_Options$onClick(
+								_user$project$Model$RemoveCity(_p4)),
 							_1: {
 								ctor: '::',
-								_0: _debois$elm_mdl$Material_Options$onClick(
-									_user$project$Model$RemoveCity(_p4)),
+								_0: _debois$elm_mdl$Material_Color$text(
+									A2(_debois$elm_mdl$Material_Color$color, _debois$elm_mdl$Material_Color$Red, _debois$elm_mdl$Material_Color$S500)),
 								_1: {ctor: '[]'}
 							}
 						}
