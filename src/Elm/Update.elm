@@ -23,8 +23,8 @@ update msg model =
         ReturnCityList list ->
             ( model
             , list
-                |> List.filterMap .id
-                |> List.map getForecastFromId
+                |> List.map .name 
+                |> List.map getForecastFromCity
                 |> Cmd.batch
             )
 
