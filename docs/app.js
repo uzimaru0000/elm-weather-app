@@ -18145,7 +18145,11 @@ var _user$project$View$inputForm = function (model) {
 										_1: {
 											ctor: '::',
 											_0: A2(_debois$elm_mdl$Material_Options$css, 'width', '100%'),
-											_1: {ctor: '[]'}
+											_1: {
+												ctor: '::',
+												_0: _debois$elm_mdl$Material_Color$text(_debois$elm_mdl$Material_Color$white),
+												_1: {ctor: '[]'}
+											}
 										}
 									}
 								}
@@ -18153,7 +18157,7 @@ var _user$project$View$inputForm = function (model) {
 						},
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html$text('Go'),
+							_0: _elm_lang$html$Html$text('Add'),
 							_1: {ctor: '[]'}
 						}),
 					_1: {ctor: '[]'}
@@ -18163,7 +18167,10 @@ var _user$project$View$inputForm = function (model) {
 	};
 };
 var _user$project$View$view = function (model) {
-	return _debois$elm_mdl$Material_Scheme$top(
+	return A3(
+		_debois$elm_mdl$Material_Scheme$topWithScheme,
+		_debois$elm_mdl$Material_Color$Cyan,
+		_debois$elm_mdl$Material_Color$Orange,
 		A4(
 			_debois$elm_mdl$Material_Layout$render,
 			_user$project$Model$Mdl,
@@ -18183,7 +18190,11 @@ var _user$project$View$view = function (model) {
 							ctor: '::',
 							_0: A2(
 								_debois$elm_mdl$Material_Layout$title,
-								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: _debois$elm_mdl$Material_Color$text(_debois$elm_mdl$Material_Color$white),
+									_1: {ctor: '[]'}
+								},
 								{
 									ctor: '::',
 									_0: _elm_lang$html$Html$text('Weather-App'),

@@ -31,7 +31,7 @@ view model =
         [ Layout.fixedHeader
         ]
         { header =
-            [ Layout.row [] [ Layout.title [] [ text "Weather-App" ] ]
+            [ Layout.row [] [ Layout.title [ Color.text Color.white ] [ text "Weather-App" ] ]
             ]
         , drawer = []
         , tabs = ( [], [] )
@@ -49,7 +49,7 @@ view model =
                     ]
             ]
         }
-        |> Scheme.top
+        |> Scheme.topWithScheme Color.Cyan Color.Orange
 
 
 inputForm : Model -> List (Grid.Cell Msg)
@@ -76,8 +76,9 @@ inputForm model =
             , Button.ripple
             , Options.onClick AddCity
             , Options.css "width" "100%"
+            , Color.text Color.white
             ]
-            [ text "Go" ]
+            [ text "Add" ]
         ]
     ]
 
