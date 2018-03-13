@@ -1,9 +1,11 @@
 module View exposing (..)
 
-import Date.Format exposing (format)
+import Date.Format as Format exposing (format)
 import Html exposing (..)
 import Model exposing (..)
 import Weather exposing (..)
+import FormatNumber as NFormat exposing (format)
+import FormatNumber.Locales exposing (Locale)
 
 
 -- MaterialModule
@@ -99,7 +101,7 @@ cardHeader { city, list } =
 
         date =
             today
-                |> Maybe.map (.time >> format "%Y-%m-%d (%a)")
+                |> Maybe.map (.time >> Format.format "%Y-%m-%d (%a)")
                 |> Maybe.withDefault ""
 
         weather =
@@ -110,7 +112,7 @@ cardHeader { city, list } =
 
         temp =
             today
-                |> Maybe.map (.temp >> .day >> tempFormat)
+                |> Maybe.map (.temp >> .day >> NFormat.format tempLocale)
                 |> Maybe.withDefault ""
     in
         Card.title
@@ -161,34 +163,22 @@ cardAction mdl ( index, data ) =
         ]
 
 
-tempFormat : Float -> String
-tempFormat temp =
-    let
-        frac =
-            temp - (floor temp |> toFloat)
-
-        fracString =
-            toString frac
-                |> String.slice 1 3
-
-        intString =
-            floor temp
-                |> toString
-    in
-        intString ++ fracString
+tempLocale : Locale
+tempLocale =
+    Locale 1 "," "." "-" ""
 
 
 weatherRow : Data -> Html Msg
 weatherRow data =
     let
         day =
-            data.time |> format "%m / %d"
+            data.time |> Format.format "%m / %d"
 
         high =
-            tempFormat data.temp.max ++ "°"
+            NFormat.format tempLocale data.temp.max ++ "°"
 
         low =
-            tempFormat data.temp.min ++ "°"
+            NFormat.format tempLocale data.temp.min ++ "°"
 
         icon =
             data.weather |> Maybe.map (.id >> weatherIcon Icon.size18) |> Maybe.withDefault (text "")
