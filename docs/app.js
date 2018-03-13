@@ -17297,11 +17297,12 @@ var _user$project$Weather$forecast = A3(
 var _user$project$Model$init = {
 	forecasts: {ctor: '[]'},
 	query: '',
+	isError: false,
 	mdl: _debois$elm_mdl$Material$model
 };
-var _user$project$Model$Model = F3(
-	function (a, b, c) {
-		return {forecasts: a, query: b, mdl: c};
+var _user$project$Model$Model = F4(
+	function (a, b, c, d) {
+		return {forecasts: a, query: b, isError: c, mdl: d};
 	});
 var _user$project$Model$Mdl = function (a) {
 	return {ctor: 'Mdl', _0: a};
@@ -17485,7 +17486,7 @@ var _user$project$Update$update = F2(
 						_elm_lang$core$Platform_Cmd_ops['!'],
 						_elm_lang$core$Native_Utils.update(
 							model,
-							{forecasts: forecasts}),
+							{forecasts: forecasts, query: '', isError: false}),
 						{
 							ctor: '::',
 							_0: _user$project$Ports$updateCityList(
@@ -17500,7 +17501,9 @@ var _user$project$Update$update = F2(
 				} else {
 					return A2(
 						_elm_lang$core$Platform_Cmd_ops['!'],
-						A2(_elm_lang$core$Debug$log, '', model),
+						_elm_lang$core$Native_Utils.update(
+							model,
+							{isError: true}),
 						{ctor: '[]'});
 				}
 			case 'InputQuery':
@@ -17508,20 +17511,15 @@ var _user$project$Update$update = F2(
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{query: _p0._0}),
+						{query: _p0._0, isError: false}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			case 'AddCity':
-				return A2(
-					_elm_lang$core$Platform_Cmd_ops['!'],
-					_elm_lang$core$Native_Utils.update(
-						model,
-						{query: ''}),
-					{
-						ctor: '::',
-						_0: _user$project$Update$getForecastFromCity(model.query),
-						_1: {ctor: '[]'}
-					});
+				return {
+					ctor: '_Tuple2',
+					_0: model,
+					_1: (!_elm_lang$core$String$isEmpty(model.query)) ? _user$project$Update$getForecastFromCity(model.query) : _elm_lang$core$Platform_Cmd$none
+				};
 			case 'RemoveCity':
 				var forecasts = A2(
 					_elm_lang$core$List$map,
@@ -18091,11 +18089,19 @@ var _user$project$View$inputForm = function (model) {
 								_0: _debois$elm_mdl$Material_Textfield$value(model.query),
 								_1: {
 									ctor: '::',
-									_0: _debois$elm_mdl$Material_Options$onInput(_user$project$Model$InputQuery),
+									_0: A2(
+										_debois$elm_mdl$Material_Options$when,
+										model.isError,
+										_debois$elm_mdl$Material_Textfield$error(
+											A2(_elm_lang$core$Basics_ops['++'], model.query, ' is not found.'))),
 									_1: {
 										ctor: '::',
-										_0: A2(_debois$elm_mdl$Material_Options$css, 'width', '100%'),
-										_1: {ctor: '[]'}
+										_0: _debois$elm_mdl$Material_Options$onInput(_user$project$Model$InputQuery),
+										_1: {
+											ctor: '::',
+											_0: A2(_debois$elm_mdl$Material_Options$css, 'width', '100%'),
+											_1: {ctor: '[]'}
+										}
 									}
 								}
 							}
