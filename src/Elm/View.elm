@@ -153,13 +153,16 @@ cardText data =
 cardAction : Material.Model -> ( Int, Forecast ) -> Card.Block Msg
 cardAction mdl ( index, data ) =
     Card.actions
-        [ Card.border, Card.expand ]
+        [ Card.border
+        , Options.css "display" "flex"
+        , Options.css "justify-content" "flex-end"
+        ]
         [ Button.render Mdl
             [ index, 0 ]
             mdl
             [ Button.ripple
-            , Button.accent
             , Options.onClick <| RemoveCity index
+            , Color.text <| Color.color Color.Red Color.S500
             ]
             [ text "Delete" ]
         ]
