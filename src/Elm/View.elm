@@ -2,6 +2,7 @@ module View exposing (..)
 
 import Date.Format as Format exposing (format)
 import Html exposing (..)
+import Html.Attributes exposing (href, target)
 import Model exposing (..)
 import Weather exposing (..)
 import FormatNumber as NFormat exposing (format)
@@ -31,7 +32,17 @@ view model =
         [ Layout.fixedHeader
         ]
         { header =
-            [ Layout.row [] [ Layout.title [ Color.text Color.white ] [ text "Weather-App" ] ]
+            [ Layout.row []
+                [ Layout.title []
+                    [ Options.styled a
+                        [ Color.text Color.white
+                        , Options.attribute <| href "https://github.com/uzimaru0000/elm-weather-app"
+                        , Options.attribute <| target "_blank"
+                        , Options.css "text-decoration" "none"
+                        ]
+                        [ text "WeatherApp" ]
+                    ]
+                ]
             ]
         , drawer = []
         , tabs = ( [], [] )
