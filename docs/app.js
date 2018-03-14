@@ -18195,14 +18195,36 @@ var _user$project$View$view = function (model) {
 							ctor: '::',
 							_0: A2(
 								_debois$elm_mdl$Material_Layout$title,
+								{ctor: '[]'},
 								{
 									ctor: '::',
-									_0: _debois$elm_mdl$Material_Color$text(_debois$elm_mdl$Material_Color$white),
-									_1: {ctor: '[]'}
-								},
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html$text('Weather-App'),
+									_0: A3(
+										_debois$elm_mdl$Material_Options$styled,
+										_elm_lang$html$Html$a,
+										{
+											ctor: '::',
+											_0: _debois$elm_mdl$Material_Color$text(_debois$elm_mdl$Material_Color$white),
+											_1: {
+												ctor: '::',
+												_0: _debois$elm_mdl$Material_Options$attribute(
+													_elm_lang$html$Html_Attributes$href('https://github.com/uzimaru0000/elm-weather-app')),
+												_1: {
+													ctor: '::',
+													_0: _debois$elm_mdl$Material_Options$attribute(
+														_elm_lang$html$Html_Attributes$target('_blank')),
+													_1: {
+														ctor: '::',
+														_0: A2(_debois$elm_mdl$Material_Options$css, 'text-decoration', 'none'),
+														_1: {ctor: '[]'}
+													}
+												}
+											}
+										},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('WeatherApp'),
+											_1: {ctor: '[]'}
+										}),
 									_1: {ctor: '[]'}
 								}),
 							_1: {ctor: '[]'}
