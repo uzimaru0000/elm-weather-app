@@ -1,0 +1,49 @@
+{
+    "results" : [
+       {
+          "address_components" : [
+             {
+                "long_name" : "秋田県",
+                "short_name" : "秋田県",
+                "types" : [ "administrative_area_level_1", "political" ]
+             },
+             {
+                "long_name" : "日本",
+                "short_name" : "JP",
+                "types" : [ "country", "political" ]
+             }
+          ],
+          "formatted_address" : "日本、秋田県",
+          "geometry" : {
+             "bounds" : {
+                "northeast" : {
+                   "lat" : 40.5111363,
+                   "lng" : 140.9953727
+                },
+                "southwest" : {
+                   "lat" : 38.8735396,
+                   "lng" : 139.6929506
+                }
+             },
+             "location" : {
+                "lat" : 39.7186135,
+                "lng" : 140.1023643
+             },
+             "location_type" : "APPROXIMATE",
+             "viewport" : {
+                "northeast" : {
+                   "lat" : 40.5111363,
+                   "lng" : 140.9953727
+                },
+                "southwest" : {
+                   "lat" : 38.8735396,
+                   "lng" : 139.6929506
+                }
+             }
+          },
+          "place_id" : "ChIJv_Eu0V7rj18REhxcYOz7fZo",
+          "types" : [ "administrative_area_level_1", "political" ]
+       }
+    ],
+    "status" : "OK"
+ }
