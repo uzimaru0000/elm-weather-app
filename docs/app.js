@@ -75,14 +75,14 @@ const Elm = __webpack_require__(2);
 const app = Elm.Main.fullscreen();
 
 app.ports.getGeocodeList_.subscribe(_ => {
-    const cityList = JSON.parse(localStorage.getItem('cities'));
-    if (cityList != null) {
-        app.ports.returnGeocodeList.send(cityList);
+    const codeList = JSON.parse(localStorage.getItem('geocode'));
+    if (codeList != null) {
+        app.ports.returnGeocodeList.send(codeList);
     }
 });
 
 app.ports.updateGeocodeList.subscribe(cities => {
-    localStorage.setItem('cities', JSON.stringify(cities));
+    localStorage.setItem('geocode', JSON.stringify(cities));
 });
 
 
@@ -17182,22 +17182,27 @@ var _user$project$Geocode$Geocode = F2(
 	});
 var _user$project$Geocode$geocode = function () {
 	var decoder = A2(
-		_elm_lang$core$Json_Decode$map,
+		_elm_lang$core$Json_Decode$andThen,
 		function (_p0) {
 			return A2(
 				_elm_lang$core$Maybe$withDefault,
-				'',
-				A2(
+				_elm_lang$core$Json_Decode$fail('Result is nothing.'),
+				A2(_elm_lang$core$Maybe$map, _NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$decode, _p0));
+		},
+		A2(
+			_elm_lang$core$Json_Decode$map,
+			function (_p1) {
+				return A2(
 					_elm_lang$core$Maybe$andThen,
 					_elm_lang$core$List$head,
-					_elm_lang$core$List$head(_p0)));
-		},
-		function (_p1) {
-			return _elm_lang$core$Json_Decode$list(
-				A2(_elm_lang$core$Json_Decode$field, 'address_components', _p1));
-		}(
+					_elm_lang$core$List$head(_p1));
+			},
 			_elm_lang$core$Json_Decode$list(
-				A2(_elm_lang$core$Json_Decode$field, 'long_name', _elm_lang$core$Json_Decode$string))));
+				A2(
+					_elm_lang$core$Json_Decode$field,
+					'address_components',
+					_elm_lang$core$Json_Decode$list(
+						A2(_elm_lang$core$Json_Decode$field, 'long_name', _elm_lang$core$Json_Decode$string))))));
 	return A3(
 		_NoRedInk$elm_decode_pipeline$Json_Decode_Pipeline$required,
 		'results',
@@ -17397,29 +17402,32 @@ var _user$project$Update$getGeocode = function (query) {
 		A2(
 			_elm_lang$http$Http$get,
 			A2(
-				_elm_lang$core$String$join,
+				_elm_lang$core$Debug$log,
 				'',
-				{
-					ctor: '::',
-					_0: _user$project$Update$geocodingBaseUrl,
-					_1: {
+				A2(
+					_elm_lang$core$String$join,
+					'',
+					{
 						ctor: '::',
-						_0: 'json?address=',
+						_0: _user$project$Update$geocodingBaseUrl,
 						_1: {
 							ctor: '::',
-							_0: _elm_lang$http$Http$encodeUri(query),
+							_0: 'json?address=',
 							_1: {
 								ctor: '::',
-								_0: '&key=',
+								_0: _elm_lang$http$Http$encodeUri(query),
 								_1: {
 									ctor: '::',
-									_0: _user$project$Update$geocodingApiKey,
-									_1: {ctor: '[]'}
+									_0: '&key=',
+									_1: {
+										ctor: '::',
+										_0: _user$project$Update$geocodingApiKey,
+										_1: {ctor: '[]'}
+									}
 								}
 							}
 						}
-					}
-				}),
+					})),
 			_user$project$Geocode$geocode));
 };
 var _user$project$Update$weatherMapBaseUrl = 'https://api.openweathermap.org/data/2.5/';
@@ -17537,19 +17545,11 @@ var _user$project$Update$update = F2(
 						});
 				} else {
 					return A2(
-						_elm_lang$core$Native_Utils.crash(
-							'Update',
-							{
-								start: {line: 55, column: 16},
-								end: {line: 55, column: 27}
-							}),
-						_elm_lang$core$Basics$toString(_p0._1._0),
-						A2(
-							_elm_lang$core$Platform_Cmd_ops['!'],
-							_elm_lang$core$Native_Utils.update(
-								model,
-								{isError: true}),
-							{ctor: '[]'}));
+						_elm_lang$core$Platform_Cmd_ops['!'],
+						_elm_lang$core$Native_Utils.update(
+							model,
+							{isError: true}),
+						{ctor: '[]'});
 				}
 			case 'GetGeocode':
 				if (_p0._0.ctor === 'Ok') {
@@ -17560,19 +17560,11 @@ var _user$project$Update$update = F2(
 					};
 				} else {
 					return A2(
-						_elm_lang$core$Native_Utils.crash(
-							'Update',
-							{
-								start: {line: 62, column: 16},
-								end: {line: 62, column: 27}
-							}),
-						_elm_lang$core$Basics$toString(_p0._0._0),
-						A2(
-							_elm_lang$core$Platform_Cmd_ops['!'],
-							_elm_lang$core$Native_Utils.update(
-								model,
-								{isError: true}),
-							{ctor: '[]'}));
+						_elm_lang$core$Platform_Cmd_ops['!'],
+						_elm_lang$core$Native_Utils.update(
+							model,
+							{isError: true}),
+						{ctor: '[]'});
 				}
 			case 'InputQuery':
 				return {
