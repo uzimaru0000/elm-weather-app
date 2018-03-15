@@ -11,7 +11,7 @@ import Material
 
 weatherMapApiKey : String
 weatherMapApiKey =
-    "94d26b113fb10bb70a9dfbeecc28dfbe"
+    ""
 
 
 weatherMapBaseUrl : String
@@ -21,7 +21,7 @@ weatherMapBaseUrl =
 
 geocodingApiKey : String
 geocodingApiKey =
-    "AIzaSyBxs0D57Mhqbsccka59sdu88ZkxhQvgN_A"
+    ""
 
 geocodingBaseUrl : String
 geocodingBaseUrl =
