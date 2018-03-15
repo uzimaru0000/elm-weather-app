@@ -6,12 +6,12 @@ const Elm = require('./Elm/Main.elm');
 const app = Elm.Main.fullscreen();
 
 app.ports.getGeocodeList_.subscribe(_ => {
-    const cityList = JSON.parse(localStorage.getItem('cities'));
-    if (cityList != null) {
-        app.ports.returnGeocodeList.send(cityList);
+    const codeList = JSON.parse(localStorage.getItem('geocode'));
+    if (codeList != null) {
+        app.ports.returnGeocodeList.send(codeList);
     }
 });
 
 app.ports.updateGeocodeList.subscribe(cities => {
-    localStorage.setItem('cities', JSON.stringify(cities));
+    localStorage.setItem('geocode', JSON.stringify(cities));
 });

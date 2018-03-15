@@ -52,14 +52,12 @@ update msg model =
 
         GetForecast _ (Err message) ->
             { model | isError = True } ! []
-            |> Debug.crash (toString message)
         
         GetGeocode (Ok geocode) ->
-            (model, getForecastFromCoord geocode )
+            (model, getForecastFromCoord geocode)
 
         GetGeocode (Err message) ->
             { model | isError = True } ! []
-            |> Debug.crash (toString message)
 
         InputQuery query ->
             ( { model | query = query, isError = False }, Cmd.none )
@@ -100,4 +98,4 @@ getForecastFromCoord code =
 getGeocode : String -> Cmd Msg
 getGeocode query =
     send GetGeocode <|
-        get (String.join "" [ geocodingBaseUrl, "json?address=", encodeUri query, "&key=", geocodingApiKey ]) geocode
+        get (String.join "" [ geocodingBaseUrl, "json?address=", encodeUri query, "&key=", geocodingApiKey ] |> Debug.log "") geocode

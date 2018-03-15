@@ -29,8 +29,9 @@ geocode =
         decoder =
             Decode.list (Decode.field "long_name" Decode.string)
                 |> Decode.field "address_components"
-                >> Decode.list
-                |> Decode.map (List.head >> Maybe.andThen List.head >> Maybe.withDefault "")
+                |> Decode.list
+                |> Decode.map (List.head >> Maybe.andThen List.head)
+                |> Decode.andThen (Maybe.map decode >> Maybe.withDefault (Decode.fail "Result is nothing."))
     in
         decode Geocode
             |> required "results" decoder
