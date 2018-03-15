@@ -2,52 +2,70 @@ module Update exposing (..)
 
 import Model exposing (..)
 import Weather exposing (..)
+import Geocode exposing (..)
 import Http exposing (..)
 import Ports exposing (..)
+import Json.Decode as Decode
 import Material
 
 
-apiKey : String
-apiKey =
+weatherMapApiKey : String
+weatherMapApiKey =
     "94d26b113fb10bb70a9dfbeecc28dfbe"
 
 
-baseUrl : String
-baseUrl =
+weatherMapBaseUrl : String
+weatherMapBaseUrl =
     "https://api.openweathermap.org/data/2.5/"
+
+
+geocodingApiKey : String
+geocodingApiKey =
+    "AIzaSyBxs0D57Mhqbsccka59sdu88ZkxhQvgN_A"
+
+geocodingBaseUrl : String
+geocodingBaseUrl =
+    "https://maps.googleapis.com/maps/api/geocode/"
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        ReturnCityList list ->
+        ReturnGeocodeList list ->
             ( model
             , list
-                |> List.map .name 
-                |> List.map getForecastFromCity
+                |> List.map getForecastFromCoord
                 |> Cmd.batch
             )
 
-        GetForecast (Ok forecast) ->
+        GetForecast code (Ok list) ->
             let
                 forecasts =
                     model.forecasts
-                        ++ (if model.forecasts |> List.map .city |> List.member forecast.city |> not then
-                                [ forecast ]
+                        ++ (if model.forecasts |> List.map .geocode |> List.member code |> not then
+                                [ Forecast code list ]
                             else
                                 []
                            )
             in
-                { model | forecasts = forecasts, query = "", isError = False } ! [ forecasts |> List.map .city |> updateCityList ]
+                { model | forecasts = forecasts, query = "", isError = False } ! [ forecasts |> List.map .geocode |> updateGeocodeList ]
 
-        GetForecast (Err message) ->
+        GetForecast _ (Err message) ->
             { model | isError = True } ! []
+            |> Debug.crash (toString message)
+        
+        GetGeocode (Ok geocode) ->
+            (model, getForecastFromCoord geocode )
+
+        GetGeocode (Err message) ->
+            { model | isError = True } ! []
+            |> Debug.crash (toString message)
 
         InputQuery query ->
             ( { model | query = query, isError = False }, Cmd.none )
 
         AddCity ->
-            (model, if String.isEmpty model.query |> not then getForecastFromCity model.query else Cmd.none)
+            (model, if String.isEmpty model.query |> not then getGeocode model.query else Cmd.none)
 
         RemoveCity index ->
             let
@@ -58,7 +76,7 @@ update msg model =
                         |> List.map Tuple.second
             in
                 ( { model | forecasts = forecasts }
-                , forecasts |> List.map .city |> updateCityList
+                , forecasts |> List.map .geocode |> updateGeocodeList
                 )
 
         Mdl msg_ ->
@@ -68,17 +86,18 @@ update msg model =
             model ! []
 
 
-getForecast : String -> Cmd Msg
-getForecast query =
-    send GetForecast <|
-        get (String.join "" [ baseUrl, "forecast/daily?", query, "&appid=", apiKey ]) forecast
+getForecast : Geocode -> String -> Cmd Msg
+getForecast code query =
+    send (GetForecast code) <|
+        get (String.join "" [ weatherMapBaseUrl, "forecast/daily?", query, "&units=metric", "&appid=", weatherMapApiKey ]) (Decode.field "list" <| Decode.list data)
 
 
-getForecastFromCity : String -> Cmd Msg
-getForecastFromCity city =
-    getForecast (String.join "" [ "q=", city, ",jp" ])
+getForecastFromCoord : Geocode -> Cmd Msg
+getForecastFromCoord code =
+    getForecast code (String.join "" [ "lat=", toString code.coord.lat, "&lon=", toString code.coord.lon ])
 
 
-getForecastFromId : Int -> Cmd Msg
-getForecastFromId id =
-    getForecast (String.join "" [ "id=", toString id ])
+getGeocode : String -> Cmd Msg
+getGeocode query =
+    send GetGeocode <|
+        get (String.join "" [ geocodingBaseUrl, "json?address=", encodeUri query, "&key=", geocodingApiKey ]) geocode

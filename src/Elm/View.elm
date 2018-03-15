@@ -107,7 +107,7 @@ card mdl ( index, data ) =
 
 
 cardHeader : Forecast -> Card.Block Msg
-cardHeader { city, list } =
+cardHeader { geocode, list } =
     let
         today =
             List.head list
@@ -130,7 +130,7 @@ cardHeader { city, list } =
     in
         Card.title
             []
-            [ Card.head [] [ text city.name ]
+            [ Card.head [] [ text geocode.cityName ]
             , Card.subhead
                 [ Options.css "display" "flex"
                 , Options.css "align-items" "center"

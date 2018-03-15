@@ -2,7 +2,14 @@ module Model exposing (..)
 
 import Http exposing (..)
 import Weather exposing (..)
+import Geocode exposing (..)
 import Material
+
+
+type alias Forecast =
+    { geocode : Geocode
+    , list : List Data
+    }
 
 
 type alias Model =
@@ -14,12 +21,13 @@ type alias Model =
 
 
 type Msg
-    = GetForecast (Result Http.Error Forecast) -- APIから天気予報を取得する
+    = GetForecast Geocode (Result Http.Error (List Data)) -- APIから天気予報を取得する
+    | GetGeocode (Result Http.Error Geocode)
     | InputQuery String -- 都市名の入力を受け付ける
     | GetCityList -- WebStrageから都市のリストを取得
-    | ReturnCityList (List City) -- WebStrageからの都市リストを返却
+    | ReturnGeocodeList (List Geocode) -- WebStrageからの都市リストを返却
     | AddCity -- 都市の追加
-    | UpdateCityList (List City) -- 都市リストの更新をJS側に伝える
+    | UpdateGeocodeList (List Geocode) -- 都市リストの更新をJS側に伝える
     | RemoveCity Int -- 都市の削除
     | Mdl (Material.Msg Msg)
 

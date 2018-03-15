@@ -1,14 +1,9 @@
 module Weather exposing (..)
 
 import Date exposing (..)
-import Json.Decode as Decode exposing (..)
+import Geocode exposing (Coord)
+import Json.Decode as Decode
 import Json.Decode.Pipeline exposing (..)
-
-
-type alias Coord =
-    { lon : Float
-    , lat : Float
-    }
 
 
 type alias City =
@@ -36,59 +31,35 @@ type alias Weather =
 
 
 type alias Data =
-    { time : Date 
+    { time : Date
     , temp : Temp
     , weather : Maybe Weather
     }
 
-type alias Forecast =
-    { city : City
-    , list : List Data
-    }
 
-
-temp : Decoder Temp
+temp : Decode.Decoder Temp
 temp =
     decode Temp
-        |> custom (field "day" float |> Decode.map ((+) -273.15))
-        |> custom (field "min" float |> Decode.map ((+) -273.15))
-        |> custom (field "max" float |> Decode.map ((+) -273.15))
-        |> custom (field "night" float |> Decode.map ((+) -273.15))
-        |> custom (field "eve" float |> Decode.map ((+) -273.15))
-        |> custom (field "morn" float |> Decode.map ((+) -273.15))
+        |> required "day" Decode.float
+        |> required "min" Decode.float
+        |> required "max" Decode.float
+        |> required "night" Decode.float
+        |> required "eve" Decode.float
+        |> required "morn" Decode.float
 
 
-weather : Decoder Weather
+weather : Decode.Decoder Weather
 weather =
     decode Weather
-        |> required "id" int
-        |> required "main" string
-        |> required "description" string
+        |> required "id" Decode.int
+        |> required "main" Decode.string
+        |> required "description" Decode.string
 
 
-data : Decoder Data
+data : Decode.Decoder Data
 data =
     decode Data
-        |> custom (field "dt" float |> Decode.map ((*) 1000 >> Date.fromTime))
+        |> custom (Decode.field "dt" Decode.float |> Decode.map ((*) 1000 >> Date.fromTime))
         |> required "temp" temp
-        |> custom (field "weather" (list weather) |> Decode.map List.head)
+        |> custom (Decode.field "weather" (Decode.list weather) |> Decode.map List.head)
 
-
-city : Decoder City
-city =
-    let
-        coord =
-            decode Coord
-                |> required "lon" float
-                |> required "lat" float
-    in
-        decode City
-            |> custom (maybe <| field "id" int)
-            |> required "name" string
-            |> required "coord" coord
-
-forecast : Decoder Forecast
-forecast =
-    decode Forecast
-    |> required "city" city
-    |> required "list" (list data)

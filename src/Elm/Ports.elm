@@ -1,12 +1,12 @@
-port module Ports exposing (getCityList, updateCityList, returnCityList)
+port module Ports exposing (getGeocodeList, updateGeocodeList, returnGeocodeList)
 
-import Weather exposing (City)
+import Geocode exposing (Geocode)
 
-port getCityList_ : () -> Cmd msg
-port updateCityList : List City -> Cmd msg
+port getGeocodeList_ : () -> Cmd msg
+port updateGeocodeList : List Geocode -> Cmd msg
 
-port returnCityList : (List City -> msg) -> Sub msg
+port returnGeocodeList : (List Geocode -> msg) -> Sub msg
 
-getCityList : Cmd msg
-getCityList =
-    getCityList_ ()
+getGeocodeList : Cmd msg
+getGeocodeList =
+    getGeocodeList_ ()
